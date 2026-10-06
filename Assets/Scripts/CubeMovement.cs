@@ -34,7 +34,7 @@ public class CubeMovement : MonoBehaviour
         transform.Translate(direction.normalized * speed * Time.deltaTime);
 
 
-        // Rotation
+        // Rotation Left Right
         if (Keyboard.current.qKey.isPressed)
         {
             transform.Rotate(0, -rSpeed * Time.deltaTime, 0);
@@ -44,5 +44,25 @@ public class CubeMovement : MonoBehaviour
         {
             transform.Rotate(0, rSpeed * Time.deltaTime, 0);
         }
+    }
+
+    private void LateUpdate()
+    {
+        // Reference: https://docs.unity.com/en-us/engine/6000.6/script-reference/unityengine/terrain/sampleheight
+        // Getting the terrain
+        Terrain terrain = Terrain.activeTerrain;
+
+        Vector3 pos = transform.position;
+
+        // Keeping the cube on the terrain
+        pos.y = 
+            // terrain height
+            terrain.transform.position.y 
+            // add terrain's Y position
+            + terrain.SampleHeight(transform.position)
+            // add half of the cube's height
+            + transform.localScale.y / 2f;
+
+        transform.position = pos;
     }
 }
