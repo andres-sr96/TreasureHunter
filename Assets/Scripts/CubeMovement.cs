@@ -5,7 +5,7 @@ public class CubeMovement : MonoBehaviour
 {
     [SerializeField] private float speed = 10f;
     [SerializeField] private float rSpeed = 100f;
-    
+
     private void Update()
     {
         Vector3 direction = Vector3.zero;
