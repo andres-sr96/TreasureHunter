@@ -5,9 +5,16 @@ public class CubeMovement : MonoBehaviour
 {
     [SerializeField] private float speed = 10f;
     [SerializeField] private float rSpeed = 100f;
+    private float waterSpeed;
+
+    private void Start()
+    {
+        waterSpeed = speed / 2f;
+    }
 
     private void Update()
     {
+        GameObject water = GameObject.Find("UNS_Water_Detailed");
         Vector3 direction = Vector3.zero;
 
         // Up Down
@@ -30,9 +37,20 @@ public class CubeMovement : MonoBehaviour
             direction.x -= 1;
         }
 
+        // Inside water movement
+        if (GetComponent<Collider>().bounds.Intersects(water.GetComponent<Collider>().bounds))
+        {
+            speed = waterSpeed;
+            Debug.Log("Underwater speed: " + speed);
+        }
+        else
+        {
+            speed = 10f;
+            Debug.Log("Normal Speed: " + speed);
+        }
+
         // Movement
         transform.Translate(direction.normalized * speed * Time.deltaTime);
-
 
         // Rotation Left Right
         if (Keyboard.current.qKey.isPressed)
